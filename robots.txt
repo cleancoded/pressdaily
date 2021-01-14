@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /wp-admin/
+Disallow: /robot/
+Allow: /wp-admin/admin-ajax.php

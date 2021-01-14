@@ -1,0 +1,187 @@
+/**
+ * Gutenberg Editor Styles
+ */
+@import 'abstracts/variables';
+@import 'abstracts/utils';
+@import 'abstracts/mixins';
+
+$guten-editor: true;
+$post-content-output: false;
+@import 'components/post-content';
+
+//
+// Staying consistent with Gutenberg transformer.
+// 
+.editor-styles-wrapper {
+	@include text;
+	@include entry-content-base;
+
+	// Stay consistent with .wrap container.
+	text-align: left;
+
+	// Can be used in .editor-block-list__block-edit - but safe to use here as well.
+	@import 'components/wp-defaults';
+
+	p {
+		margin: 0;
+		font-size: inherit;
+		line-height: inherit;
+	}
+
+	ol,
+	ul {
+		margin: 0;
+		padding: 0;
+	}
+
+	ul ul,
+	ul ol,
+	ol ul,
+	ol ol {
+		margin-bottom: 0; 
+	}
+	
+	li {
+		margin-bottom: initial;
+	}
+
+	// ul:not(.wp-block-gallery) {
+	ul {
+		list-style-type: disc;
+	}
+
+	ol {
+		list-style-type: decimal;
+	}
+
+	// Need to re-do li/ul for direct childs.
+	.block-library-list {
+		@include p-element-list;
+	}
+}
+
+//
+// Inner
+//
+.editor-block-list__block-edit {
+
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+	}
+
+	// Default styles add extra inner padding.
+	.wp-block-table__cell-content {
+		padding: 0;	
+	}
+
+	@import 'base/elements';
+	@import 'components/galleries';
+
+	@include common-post-content;
+	@include post-content;
+	@include entry-content;
+
+	blockquote p {
+		color: inherit;
+	}
+
+	.wp-block-gallery {
+		li:before { 
+			display: none; 
+		}
+	}
+
+	.block-library-list ul {
+		list-style: none;
+	}
+
+	// Undo for common-post-content
+	// @todo remove in post-content output and specifically remove margins from some blocks only.
+	> :first-child,
+	> :last-child {
+		margin-top: initial;
+	}
+
+	// Fix galleries alignment.
+	.alignwide {
+		margin-left: 0;
+		margin-right: 0;
+		max-width: initial;
+	}
+}
+
+.block-library-list .components-autocomplete {
+	@include entry-content;
+}
+
+.editor-rich-text__tinymce.mce-content-body {
+	line-height: inherit;
+}
+
+// Unknown usage?
+// .editor-block-list__layout > [data-type="core/paragraph"] > .editor-block-list__block-edit {
+// 	margin-top: 0;
+// 	margin-bottom: 15px;
+// }
+
+// Needs margin when inside columns
+.wp-block-columns [data-type="core/paragraph"]:first-child > .editor-block-list__block-edit {
+	margin-top: 28px;
+}
+
+.wp-block {
+	max-width: 750px;
+}
+
+.wp-block[data-align="wide"] {
+	max-width: 1100px;
+}
+
+//
+// Pull Quotes
+// Specifics - bugged with left align.
+//
+[data-type="core/pullquote"][data-align=left] .editor-block-list__block-edit,
+[data-type="core/pullquote"][data-align=right] .editor-block-list__block-edit {
+	max-width: 45%;
+
+	.wp-block-pullquote {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	p {
+		font-size: inherit !important;
+	}
+}
+
+// Title margin below
+.edit-post-visual-editor .editor-post-title__block {
+	margin-bottom: 20px;
+}
+
+//
+// Group Block
+//
+.wp-block[data-type="core/group"] > .editor-block-list__block-edit > div > .wp-block-group.has-background > .wp-block-group__inner-container > .editor-inner-blocks {
+	margin-bottom: 0;
+	margin-top: 0;
+}
+
+// Remove bottom margin from the last block in the group.
+.wp-block[data-type="core/group"] {
+	.wp-block:last-child {
+		[data-block] {
+			> div,
+			[class*="wp-block-"] {
+				margin-bottom: 0;
+			}
+		}
+	}
+}
+
+// Images margin added by gutenberg styles.
+[data-type="core/image"][data-align="center"] .block-editor-block-list__block-edit figure {
+	margin-bottom: 40px;
+}
